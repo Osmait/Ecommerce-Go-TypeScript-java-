@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from 'src/prisma.service';
-import { Prisma } from '@prisma/client';
+import { Prisma, User } from '@prisma/client';
 import { v4 as uuidv4 } from 'uuid';
 import * as bcrypt from 'bcrypt';
 import { userRequestDto } from '../schema/userRequest';
@@ -21,7 +21,7 @@ export class UserService {
     };
     await this.prisma.user.create({ data: user });
   }
-  public async findUserbyEmail(params: UserQueryParams): Promise<UserResponse> {
+  public async findUserby(params: UserQueryParams): Promise<UserResponse> {
     const result = await this.prisma.user.findFirst({
       where: { OR: [{ email: params.email }, { id: params.id }] },
     });
@@ -32,7 +32,17 @@ export class UserService {
     const userResponse: UserResponse = { id, name, lastName, email, createdAt };
     return userResponse;
   }
+  public async findUserbyEmailWithPassword(email: string): Promise<User> {
+    const result = await this.prisma.user.findFirst({
+      where: { email },
+    });
+    if (!result) {
+      throw new NotFoundException();
+    }
+    return result;
+  }
   public async updateUser(user: userRequestDto, id: string): Promise<void> {
+    user.password = await bcrypt.hash(user.password, 10);
     await this.prisma.user.update({
       where: { id },
       data: { ...user },
