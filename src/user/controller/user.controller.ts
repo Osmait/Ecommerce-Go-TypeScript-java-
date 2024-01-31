@@ -51,6 +51,7 @@ export class UserController {
     @Req() request: Request,
   ): void {
     const userAuth = request['x-user'];
+
     if (userAuth.sub !== param.id) {
       throw new UnauthorizedException();
     }
@@ -65,7 +66,7 @@ export class UserController {
   ): void {
     const user = request['x-user'];
     console.log(user.sub !== param.id);
-    if (user.id !== param.id) {
+    if (user.sub !== param.id) {
       throw new UnauthorizedException();
     }
     this.userServices.deleteUser(param.id);
