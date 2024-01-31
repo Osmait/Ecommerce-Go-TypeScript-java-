@@ -41,7 +41,7 @@ export class UserController {
   @Roles(Role.Admin)
   @UsePipes(new ZodPipe(UserQueryParamsSchema))
   public findOne(@Query() params: UserQueryParams): Promise<UserResponse> {
-    return this.userServices.findUserbyEmail(params);
+    return this.userServices.findUserby(params);
   }
 
   @Put()
@@ -51,7 +51,7 @@ export class UserController {
     @Req() request: Request,
   ): void {
     const userAuth = request['x-user'];
-    if (userAuth.id === param.id) {
+    if (userAuth.sub !== param.id) {
       throw new UnauthorizedException();
     }
 
@@ -64,7 +64,8 @@ export class UserController {
     @Req() request: Request,
   ): void {
     const user = request['x-user'];
-    if (user.id === param.id) {
+    console.log(user.sub !== param.id);
+    if (user.id !== param.id) {
       throw new UnauthorizedException();
     }
     this.userServices.deleteUser(param.id);
