@@ -1,0 +1,75 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = "file:./dev.db"
+}
+
+model User {
+  id        String   @id
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  email     String   @unique
+  name      String
+  lastName  String
+  password  String
+  address   Address? @relation(fields: [addressId], references: [id])
+  addressId String?
+}
+
+model Category {
+  id          String    @id
+  name        String    @unique
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  product     Product[]
+}
+
+model Product {
+  id          String      @id
+  name        String
+  description String
+  price       Int
+  stock       Int
+  imagen      String?
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+  Category    Category?   @relation(fields: [categoryId], references: [id])
+  categoryId  String?
+  OrderItem   OrderItem[]
+}
+
+model Order {
+  id        String      @id
+  items     OrderItem[]
+  createdAt DateTime    @default(now())
+  updatedAt DateTime    @updatedAt
+}
+
+model OrderItem {
+  id        String   @id
+  quantity  Int
+  producto  Product  @relation(fields: [productId], references: [id])
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  productId String
+  Order     Order?   @relation(fields: [orderId], references: [id])
+  orderId   String?
+}
+
+model Address {
+  id        String   @id
+  street    String
+  city      String
+  zipCode   String
+  country   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  User      User[]
+}
