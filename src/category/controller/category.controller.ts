@@ -20,8 +20,7 @@ export class CategoryController {
   constructor(private categoryService: CategoryService) {}
 
   @Post()
-  @Public()
-  public createUser(
+  public createCategory(
     @Body(new ZodPipe(CategoryRequest)) categoryRequest: CategoryRequestDto,
   ): void {
     this.categoryService.createCategory(categoryRequest);
@@ -30,7 +29,6 @@ export class CategoryController {
   @Public()
   @UsePipes(new ZodPipe(CategoryFilters))
   public findCategorys(@Query() categoryFilters: CategoryFiltersDto) {
-    console.log(categoryFilters);
     const filter: CategoryFiltersDto = {
       skip: categoryFilters.skip ? categoryFilters.skip : 1,
       take: categoryFilters.take ? categoryFilters.take : 10,
@@ -41,7 +39,6 @@ export class CategoryController {
   }
 
   @Put()
-  @Public()
   public updateCategory(
     @Body(new ZodPipe(CategoryRequest)) categoryRequest: CategoryRequestDto,
     @Query(new ZodPipe(idValidate)) param: idValidateDto,
@@ -50,7 +47,6 @@ export class CategoryController {
   }
 
   @Delete()
-  @Public()
   public deleteCategory(@Query(new ZodPipe(idValidate)) param: idValidateDto) {
     this.categoryService.deleteCategory(param.id);
   }
