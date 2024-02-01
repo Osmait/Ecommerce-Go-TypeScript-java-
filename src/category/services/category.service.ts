@@ -41,6 +41,7 @@ export class CategoryService {
             skip: skipCal,
             take: take,
             orderBy: { [orderBy]: orderDir },
+            include: { product: true },
           });
 
       return listOfCategory;
