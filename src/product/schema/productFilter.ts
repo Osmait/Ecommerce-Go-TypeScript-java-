@@ -10,16 +10,12 @@ export const ProductFilters = z.object({
           code: z.ZodIssueCode.custom,
           message: 'Not a number',
         });
-
-        // This is a special symbol you can use to
-        // return early from the transform function.
-        // It has type `never` so it does not affect the
-        // inferred return type.
         return z.NEVER;
       }
       return parsed;
     })
     .optional(),
+
   take: z
     .string()
 
@@ -30,20 +26,17 @@ export const ProductFilters = z.object({
           code: z.ZodIssueCode.custom,
           message: 'Not a number',
         });
-
-        // This is a special symbol you can use to
-        // return early from the transform function.
-        // It has type `never` so it does not affect the
-        // inferred return type.
         return z.NEVER;
       }
       return parsed;
     })
     .optional(),
-  orderBy: z.string().default('name'),
+
+  orderBy: z.enum(['name', 'description', 'createdAt']).default('name'),
   orderDir: z.enum(['asc', 'desc']).default('asc'),
-  filterBy: z.string().optional(),
+  filterBy: z.enum(['name', 'category', 'createdAt', 'description']).optional(),
   filterParam: z.string().optional(),
+
   minPrice: z
     .string()
     .transform((val, ctx) => {
@@ -53,16 +46,12 @@ export const ProductFilters = z.object({
           code: z.ZodIssueCode.custom,
           message: 'Not a number',
         });
-
-        // This is a special symbol you can use to
-        // return early from the transform function.
-        // It has type `never` so it does not affect the
-        // inferred return type.
         return z.NEVER;
       }
       return parsed;
     })
     .optional(),
+
   maxPrice: z
     .string()
     .transform((val, ctx) => {
@@ -73,10 +62,6 @@ export const ProductFilters = z.object({
           message: 'Not a number',
         });
 
-        // This is a special symbol you can use to
-        // return early from the transform function.
-        // It has type `never` so it does not affect the
-        // inferred return type.
         return z.NEVER;
       }
       return parsed;
