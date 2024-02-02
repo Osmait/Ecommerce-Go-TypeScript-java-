@@ -37,10 +37,13 @@ export class ProductController {
       orderBy: productFilters.orderBy ? productFilters.orderBy : 'name',
       orderDir: productFilters.orderDir ? productFilters.orderDir : 'desc',
       maxPrice: productFilters.maxPrice
-        ? productFilters.maxPrice
+        ? Number(productFilters.maxPrice)
         : await this.productServices.maxPriceofProducts(),
-      minPrice: productFilters.minPrice ? productFilters.minPrice : 0,
+      minPrice: productFilters.minPrice ? Number(productFilters.minPrice) : 0,
+      filterBy: productFilters.filterBy,
+      filterParam: productFilters.filterParam,
     };
+
     return this.productServices.findAllProduct(filter);
   }
 

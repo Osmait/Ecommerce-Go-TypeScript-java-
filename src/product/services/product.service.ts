@@ -47,19 +47,25 @@ export class ProductService {
     } = productFilters;
 
     const skipCal = (skip - 1) * take;
+    console.log(filterBy);
 
     const condition = {
       skip: skipCal,
       take: take,
       orderBy: { [orderBy]: orderDir },
       where: {
-        ...(filterBy && { [filterBy]: filterParam }),
+        ...(filterBy && {
+          [filterBy]: {
+            contains: filterParam,
+          },
+        }),
         price: {
           gte: minPrice,
           lte: maxPrice,
         },
       },
     };
+    console.log(condition);
 
     try {
       const listOfProduct = await this.prisma.product.findMany(condition);
