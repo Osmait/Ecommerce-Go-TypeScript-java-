@@ -54,11 +54,19 @@ export class ProductService {
       take: take,
       orderBy: { [orderBy]: orderDir },
       where: {
-        ...(filterBy && {
-          [filterBy]: {
-            contains: filterParam,
-          },
-        }),
+        ...(filterBy && filterBy !== 'category'
+          ? {
+              [filterBy]: {
+                contains: filterParam,
+              },
+            }
+          : {
+              Category: {
+                name: {
+                  contains: filterParam,
+                },
+              },
+            }),
         price: {
           gte: minPrice,
           lte: maxPrice,
