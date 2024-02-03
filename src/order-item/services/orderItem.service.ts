@@ -3,7 +3,7 @@ import { OrderItem } from '@prisma/client';
 import { PrismaService } from 'src/prisma.service';
 import { v4 as uuidv4 } from 'uuid';
 @Injectable()
-export class OrderService {
+export class OrderItemService {
   constructor(private prisma: PrismaService) {}
 
   public async createOrderItem(orderRequest: OrderItem) {
