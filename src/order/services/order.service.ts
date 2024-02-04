@@ -20,7 +20,10 @@ export class OrderService {
     await this.prisma.order.create({ data: order });
   }
   public async findActiveOrder(userId: string) {
-    return await this.prisma.order.findMany({ where: { userId } });
+    return await this.prisma.order.findMany({
+      where: { userId },
+      include: { items: true },
+    });
   }
   public async cancelOrder(orderId: string) {
     const order = await this.prisma.order.findFirst({ where: { id: orderId } });
