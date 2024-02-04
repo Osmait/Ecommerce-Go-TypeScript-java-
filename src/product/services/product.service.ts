@@ -47,7 +47,6 @@ export class ProductService {
     } = productFilters;
 
     const skipCal = (skip - 1) * take;
-    console.log(filterBy);
 
     const condition = {
       skip: skipCal,
