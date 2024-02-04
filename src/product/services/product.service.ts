@@ -99,6 +99,12 @@ export class ProductService {
     productRequest: ProductRequestDto,
     id: string,
   ): Promise<void> {
+    const category = await this.prisma.category.findUnique({
+      where: { id: productRequest.categoryId },
+    });
+    if (!category) {
+      throw new NotFoundException();
+    }
     await this.prisma.product.update({
       where: { id },
       data: productRequest,
